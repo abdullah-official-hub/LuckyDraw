@@ -10,7 +10,7 @@ import './btn.css';
 class App extends Component {
   constructor(porps) {
     super(porps);
-    this.state = { data : [], range : 0, selected:0, drawLimit:0 }
+    this.state = { data : [], range : 0, selected:0, drawLimit:0, usedDrawLimits:0 }
     this.handleChange = this.handleChange.bind(this);
     this.handleReadFile = this.handleReadFile.bind(this);
   }
@@ -34,7 +34,15 @@ class App extends Component {
         drawTimes = text.length;
         selected.push(Math.floor(Math.random() * text.length));
       }
-      this.setState({data:text,range:text.length,selected : selected, drawLimit: drawTimes, isRemoveData : newIsRemoveData});
+      this.setState(prevState =>{
+        return{
+            data:text,
+            range:text.length,
+            selected : selected,
+            drawLimit: prevState.usedDrawLimits+drawTimes,
+            isRemoveData : newIsRemoveData
+        }
+      })
       //console.log(this.state);
   }
 
@@ -72,6 +80,7 @@ class App extends Component {
               drawButtonLabel={'start'}
               textArray={this.state.data}
               onSuccessDrawReturn={drawNumber => {
+
                 sweetAlert(this.state.data[this.state.selected[this.state.selected.length-1]], 'Congratulations !', "success");
                 if (this.state.isRemoveData===true){
                   // var newData = this.state.data;
@@ -97,6 +106,11 @@ class App extends Component {
                     }
                  })
                 }
+                this.setState(prevState =>{
+                  return{
+                      usedDrawLimits : prevState.usedDrawLimits+1
+                  }
+               })
                 //console.log(this.state);
               }}
               onOutLimitAlert={limit => {
