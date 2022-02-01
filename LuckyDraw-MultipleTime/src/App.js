@@ -27,7 +27,7 @@ class App extends Component {
           text[index] = text[index].replace(/[*]/g, '');
           selected.push(index);
           newIsRemoveData=true;
-          drawTimes++;
+          ++drawTimes;
         }
       }
       if (newIsRemoveData===false){
@@ -35,7 +35,7 @@ class App extends Component {
         selected.push(Math.floor(Math.random() * text.length));
       }
       this.setState({data:text,range:text.length,selected : selected, drawLimit: drawTimes, isRemoveData : newIsRemoveData});
-      console.log(this.state);
+      //console.log(this.state);
   }
 
   handleChange(event)
@@ -97,7 +97,7 @@ class App extends Component {
                     }
                  })
                 }
-                console.log(this.state);
+                //console.log(this.state);
               }}
               onOutLimitAlert={limit => {
                 if (limit) {
