@@ -10,7 +10,7 @@ import './btn.css';
 class App extends Component {
   constructor(porps) {
     super(porps);
-    this.state = { data : [], range : 0, selected:0 }
+    this.state = { data : [], range : 0, selected:0, drawLimit:0 }
     this.handleChange = this.handleChange.bind(this);
     this.handleReadFile = this.handleReadFile.bind(this);
   }
@@ -19,16 +19,19 @@ class App extends Component {
       let text = (event.target.result)
       text = text.split("\n")
       var selected;
+      var flag=true;
       for (var index=0;index<text.length;index++){
-        text[index] = text[index].replace(/[^\w *]/g, '');
+        text[index] = text[index].replace(/[\n\r]/g,'');
         if (text[index][text[index].length - 1] === '*'){
-          text[index] = text[index].replace(/[^\w ]/g, '');
+          text[index] = text[index].replace(/[*]/g, '');
           selected = index;
+          flag=false;
           break;
         }
       }
-      selected = selected ? selected : Math.floor(Math.random() * text.length);
-      this.setState({data:text,range:text.length,selected : selected})
+      if (flag===true)
+        selected = Math.floor(Math.random() * text.length);
+      this.setState({data:text,range:text.length,selected : selected, drawLimit: this.state.drawLimit+1})
   }
 
   handleChange(event)
@@ -54,13 +57,13 @@ class App extends Component {
               height={600}
               wheelSize={1600}
               range={this.state.range}
-              innerRadius={400}
+              innerRadius={320}
               outerRadius={780}
               showInnerLabels
               drawLimitSwitch
-              drawLimit={4}
+              drawLimit={this.state.drawLimit}
               fontColor={'#000'}
-              fontSize={'20px'}
+              fontSize={'16px'}
               writingModel={'tb'}
               drawButtonLabel={'start'}
               textArray={this.state.data}
@@ -69,7 +72,7 @@ class App extends Component {
               }}
               onOutLimitAlert={limit => {
                 if (limit) {
-                  sweetAlert("Oops...", "out of limits!!", "error");
+                  sweetAlert("Oops...", "out of limits!!, Select records file", "error");
                 }
               }}
             />
