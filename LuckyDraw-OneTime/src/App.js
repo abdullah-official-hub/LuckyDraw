@@ -50,7 +50,7 @@ class App extends Component {
         </div>
       <div style={{flex:1,justifyContent:'center',alignItems:'center', backgroundColor:'pink'}}>
             <LuckyDraw
-              rotateSecond={20}
+              rotateSecond={200}
               turns={6}
               selected={this.state.selected}
               width={'100%'}
